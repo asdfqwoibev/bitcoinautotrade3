@@ -232,7 +232,6 @@ def get_exchange_rate():
     return exchange_rate
 
 # 자동매매 시작
-schedule.every().day.at("11:00").do(send_message, "작동 중")
 try:
     ACCESS_TOKEN = get_access_token()
 
@@ -251,8 +250,13 @@ try:
     buy_amount = total_cash * buy_percent / exchange_rate # 종목별 주문 금액 계산 (달러)
     soldout = False
 
+    t_now = datetime.datetime.now(timezone('America/New_York'))
     send_message("===해외 주식 자동매매 프로그램을 시작합니다===")
+    send_message(t_now)
+    schedule.every().day.at("11:00").do(send_message, t_now)
     while True:
+        schedule.run_pending()
+        time.sleep(1)
         t_now = datetime.datetime.now(timezone('America/New_York')) # 뉴욕 기준 현재 시간
         t_9 = t_now.replace(hour=9, minute=30, second=0, microsecond=0)
         t_start = t_now.replace(hour=9, minute=35, second=0, microsecond=0)
