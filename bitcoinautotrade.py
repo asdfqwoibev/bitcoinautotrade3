@@ -54,21 +54,27 @@ while True:
     time.sleep(1)
     try:
         now = datetime.datetime.now()
-        start_time = get_start_time("KRW-ETH")
+        start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
-
+        df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
+        stop_price = df.iloc[0]['close']
         if start_time < now < end_time - datetime.timedelta(seconds=60):
-            target_price = get_target_price("KRW-ETH", 0.17)
-            current_price = get_current_price("KRW-ETH")
+            target_price = get_target_price("KRW-BTC", 0.17)
+            current_price = get_current_price("KRW-BTC")
             if target_price < current_price :
                 krw = get_balance("KRW")
                 if krw > 5000:
-                    buy_result = upbit.buy_market_order("KRW-ETH", krw*0.9995)
+                    buy_result = upbit.buy_market_order("KRW-BTC", krw*0.9995)
                     send_message("매수" +str(buy_result))
+            elif current_price == stop_price :
+                BTC = get_balance("BTC")
+                if BTC > 0.00008:
+                    sell_result = upbit.sell_market_order("KRW-BTC", BTC*0.9995)
+                    send_message( "매도" +str(sell_result))                
         else:
-            ETH = get_balance("ETH")
-            if ETH > 0.00008:
-                sell_result = upbit.sell_market_order("KRW-ETH", ETH*0.9995)
+            BTC = get_balance("BTC")
+            if BTC > 0.00008:
+                sell_result = upbit.sell_market_order("KRW-BTC", BTC*0.9995)
                 send_message( "매도" +str(sell_result))
         time.sleep(1)
     except Exception as e:
