@@ -56,10 +56,10 @@ while True:
         now = datetime.datetime.now()
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
-        df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
+        df = pyupbit.get_ohlcv("KRW-BTC", interval="day", count=2)
         stop_price = df.iloc[0]['close']
         if start_time < now < end_time - datetime.timedelta(seconds=60):
-            target_price = get_target_price("KRW-BTC", 0.17)
+            target_price = get_target_price("KRW-BTC", 0.3)
             current_price = get_current_price("KRW-BTC")
             if target_price < current_price :
                 krw = get_balance("KRW")
