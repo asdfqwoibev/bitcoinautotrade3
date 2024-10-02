@@ -66,11 +66,6 @@ while True:
                 if krw > 5000:
                     buy_result = upbit.buy_market_order("KRW-BTC", krw*0.9995)
                     send_message("매수" +str(buy_result))
-            elif current_price == stop_price :
-                BTC = get_balance("BTC")
-                if BTC > 0.00008:
-                    sell_result = upbit.sell_market_order("KRW-BTC", BTC*0.9995)
-                    send_message( "매도" +str(sell_result))                
         else:
             BTC = get_balance("BTC")
             if BTC > 0.00008:
